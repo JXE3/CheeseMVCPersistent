@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using CheeseMVC.ViewModels;
 using CheeseMVC.Data;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace CheeseMVC.Controllers
 {
@@ -19,14 +21,19 @@ namespace CheeseMVC.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<Cheese> cheeses = context.Cheeses.ToList();
+        //    List<Cheese> cheeses = context.Cheeses.ToList();
+            IList<Cheese> cheeses = context.Cheeses.Include(c => c.Category).ToList();
+            
 
             return View(cheeses);
         }
 
         public IActionResult Add()
         {
-            AddCheeseViewModel addCheeseViewModel = new AddCheeseViewModel();
+            IEnumerable<CheeseCategory> allCategories = context.Categories.ToList();
+
+            AddCheeseViewModel addCheeseViewModel = new AddCheeseViewModel(allCategories);
+
             return View(addCheeseViewModel);
         }
 
@@ -35,20 +42,28 @@ namespace CheeseMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                
+                
+
                 // Add the new cheese to my existing cheeses
                 Cheese newCheese = new Cheese
                 {
                     Name = addCheeseViewModel.Name,
                     Description = addCheeseViewModel.Description,
-                    Type = addCheeseViewModel.Type
+                    CategoryId = (int)addCheeseViewModel.CategoryID
+
                 };
 
                 context.Cheeses.Add(newCheese);
                 context.SaveChanges();
 
+
                 return Redirect("/Cheese");
+                
             }
 
+            Add();
+            //return Redirect("/Add");
             return View(addCheeseViewModel);
         }
 
@@ -72,5 +87,14 @@ namespace CheeseMVC.Controllers
 
             return Redirect("/");
         }
+
+        
+        public ActionResult Submit()
+        {
+            return Redirect("/");
+        }
+        
+       
+
     }
 }

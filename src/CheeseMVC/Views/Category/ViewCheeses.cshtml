@@ -1,0 +1,18 @@
+﻿@model List<CheeseMVC.Models.Cheese>
+
+<h1>@ViewBag.Title</h1>
+
+<ul>
+    @foreach (var cheese in Model)
+    {
+
+       <li>@cheese.Name</li>
+      
+
+    }
+</ul>
+
+@if (Model.Count == 0)
+{
+    <p>No cheeses in this category yet!</p>
+}

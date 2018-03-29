@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace CheeseMVC.Models
 {
-    public enum CheeseType
+    public class CategoryCheeseX
     {
-        Hard, Soft, Fake
+        
+        IList<Cheese> CategoryCheeses { get; set; }
     }
 }

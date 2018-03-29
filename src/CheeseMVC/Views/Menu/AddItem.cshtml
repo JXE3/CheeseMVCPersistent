@@ -1,0 +1,38 @@
+﻿@model CheeseMVC.ViewModels.AddMenuItemViewModel
+
+
+<h3>Add Item to Menu: @Model.Menu.Name</h3>
+
+
+<form asp-controller="Menu" asp-action="AddItem2" method="post">
+
+    <select id="mySelect" onchange="myFunction()">
+
+        @foreach (SelectListItem item in Model.Cheeses)
+        {
+            <option value="@item.Value">@item.Text</option>
+        }
+
+    </select>
+    <br />
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("mySelect").value;
+
+            CheeseID.value = x;
+        }
+    </script>
+
+    <div class="form-group">
+        <input type="hidden" class="form-control" asp-for="CheeseID" value="1" />
+        <input type="hidden" class="form-control" asp-for="MenuID" value="@Model.Menu.ID" />
+        <p>@ViewBag.message</p>
+    </div>
+
+
+    <input type="submit" value="Add Item" />
+
+
+</form>
+
